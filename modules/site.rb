@@ -9,6 +9,45 @@ class Site < Sinatra::Base
   get '/' do
     erb(:main)
   end
+
+  post "/deathclaw" do
+      """
+      Name
+      Deathclaw alpha male
+
+      ID
+      00167ec1
+
+      Level
+      25
+
+      Experience points
+      50
+
+      Perception
+      8
+
+      Hit points
+      750
+
+      Damage Threshold
+      15
+
+      Damage Resistance
+      0%
+
+
+      Aggression
+      Confidence
+      Assistance
+
+      Melee (300 Damage)
+          dead 15% Deathclaw egg
+          dead 35% Deathclaw hand
+
+   """
+  end
+  
 end
 
 

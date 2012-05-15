@@ -1,0 +1,153 @@
+==Using Sinatra Unicorn and Heroku (CEDAR stack) Together!
+
+
+=== I have been asked 
+* "How do I get started with Unicorn and Heroku?"
+* "How can I made a remote HTTP webhook?"
+* "How can I make a simple web service?" ,
+* "How can I get started with a free ruby hosting evironment?"
+
+I want to take a moment to answer a few of these questions in a small package I have
+extracted from one of our small services. This package is avalible on 
+https://github.com/blazingcloud/sinatra-with-unicorn with a MIT License
+
+This blog posts assumes basic familiarity with the 'git' command : [[http://gitimmersion.com/|http://gitimmersion.com/]]
+
+* '$' will prefix every command
+example:
+{{{
+$ echo "<3"
+}}}
+
+
+=== Follow these steps to get started :
+
+# Login or create a github.com account
+# Visit https://github.com/blazingcloud/sinatra-with-unicorn in your web browser and 'FORK' the repository.
+# Rename your fork by clicking the 'ADMIN' button 
+* I gave mine a name off the top of my head : monkey-flyer-radio-protocol-death-claw-alpha
+
+=== Follow these steps to set-up development:
+I will follow each of the steps with the command that I used - replace 'monkey-flyer-radio-protocol-death-claw-alpha' with
+your project fork name
+
+* clone your repository
+{{{
+$ git clone git@github.com:robotarmy/monkey-flyer-radio-protocol-death-claw-alpha.git
+}}}
+
+* The repository has been setup to use bundler with a Gemfile - you will need to install bundler
+{{{
+$ gem install bundler
+}}}
+* With bundler installed you can use the Gemfile to manage installation of gems :
+{{{
+$ bundle
+}}}
+
+=== Follow these steps to change the default GET uri '/' and see the results
+
+* open ./modules/site/main.erb in your editor 
+** you can put html in here or text
+* run the server
+{{{
+$ foreman start 
+}}}
+
+* open the browser up to http://localhost:5000
+** see it works!
+
+* Use 'CTRL-C' to stop the server
+
+=== Follow these steps to add a post uri '/deathclaw' and see the results
+
+* open ./modules/site.rb in your editor
+** this is a Sinatra Module - it has a get '/' defined already. 
+* add a line of code in the body of the class after the 'get' part
+{{{
+  post "/deathclaw" do
+      """
+      Name
+      Deathclaw alpha male
+
+      ID
+      00167ec1
+
+      Level
+      25
+
+      Experience points
+      50
+
+      Perception
+      8
+
+      Hit points
+      750
+
+      Damage Threshold
+      15
+
+      Damage Resistance
+      0%
+
+
+      Aggression
+      Confidence
+      Assistance
+
+      Melee (300 Damage)
+          dead 15% Deathclaw egg
+          dead 35% Deathclaw hand
+
+   """
+  end
+}}}
+
+* run your service again
+{{{
+$ foreman start
+}}}
+* run a post with curl on the command line in a new console window
+{{{
+$ curl -d var=1 http://localhost:5000/deathclaw
+}}}
+
+=== Check in your changes
+{{{
+$ git add .
+}}}
+{{{
+$ git commit -m 'I made a post /deathclaw'
+}}}
+
+=== Release to Heroku (ON CEDAR STACK)
+* create a new heroku app ( i named mine )
+{{{
+ $ heroku create radio-protocol-death-claw --stack cedar 
+}}}
+* release your code to heroku ( heroku creates a git remote 'heroku' )
+** you should see messages about heroku recieving your push and installing your gems via bundler 
+{{{
+ $ git push heroku master
+}}}
+* check your get
+{{{
+curl http://radio-protocol-death-claw.herokuapp.com/
+}}}
+* check your post
+{{{
+curl -d var=1 http://radio-protocol-death-claw.herokuapp.com/deathclaw
+}}}
+
+=== DEBUGGING HELP
+
+* foreman start 
+** this command will not reload your code changes - you will need to use 'rerun' if you want that.
+** rails does this for free - at the cost of increased learning curve
+
+* curl ARGS URL
+** no args 
+*** does a get
+** -d var=1 
+*** this tells curl to do a post with a post  variable (unused, but simulates a post)
